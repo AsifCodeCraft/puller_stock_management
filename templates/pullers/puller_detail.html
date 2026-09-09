@@ -1,0 +1,411 @@
+{% extends 'pullers/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Puller and Button
+{% endblock %}
+
+
+{% block navbar_title %}
+    Puller and Button
+{% endblock %}
+
+
+{% block content %}
+
+<!-- START: Dashboard Header Banner -->
+
+<!-- END: Dashboard Header Banner -->
+
+<!-- START: Main Layout Grid (2 Columns: Dashboard + Performance Pane) -->
+<div class="row g-4">
+
+    <!-- TOP AREA: Quick Info Stat Cards Row (Full Width) -->
+    <!-- END: TOP AREA -->
+
+
+       
+<!-- START: MAIN CONTENT -->
+
+<div class="container-fluid page-container">
+
+
+    <!-- BACK -->
+
+    <a href="
+        {% if category == 'special' %}{% url 'special_puller_page' %}
+        {% elif category == 'da' %}{% url 'da_puller_page' %}
+        {% elif category == 'dalh' %}{% url 'dalh_puller_page' %}
+        {% else %}{% url 'puller_list' %}
+        {% endif %}
+    " class="back-link">
+        <i class="bi bi-arrow-left me-1"></i>
+        Back to Puller List
+    </a>
+
+
+
+    <!-- DETAIL CARD -->
+    <div class="detail-card">
+
+        <!-- HEADER -->
+        <div class="puller-detail-header">
+            <span class="puller-code-badge">
+                <i class="bi bi-upc-scan me-1"></i>
+                {{ puller.puller_code|default:"-" }}
+            </span>
+
+            <h1 class="puller-detail-name">
+                {{ puller.puller_name|default:"Unnamed Puller" }}
+            </h1>
+        </div>
+
+
+
+        <!-- CONTENT -->
+        <div class="detail-content">
+            <div class="row g-5">
+
+                <!-- IMAGE -->
+                <!-- IMAGE GALLERY -->
+                    <div class="col-lg-5 image-gallery">
+
+                        <!-- MAIN IMAGE -->
+                        <div class="puller-details-image-container">
+                            {% if puller.images.all %}
+                                {% with first_image=puller.images.all.0 %}
+                                    {% if first_image %}
+                                        <img
+                                            id="mainPullerImage"
+                                            src="{{ first_image.image.url }}"
+                                            alt="{{ puller.puller_name }}"
+                                            class="puller-details-image"
+                                        >
+                                    {% else %}
+                                        <div class="no-image">
+                                            <i class="bi bi-image d-block"></i>
+                                            <div class="mt-2">
+                                                No Image Available
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            {% else %}
+                                <div class="no-image">
+                                    <i class="bi bi-image d-block"></i>
+                                    <div class="mt-2">
+                                        No Image Available
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- THUMBNAILS -->
+                        <div class="thumbnail-container">
+                            {% for image in puller.images.all %}
+                                <div
+                                    class="thumbnail {% if forloop.first %}active{% endif %}"
+                                    onclick="changeImage('{{ image.image.url }}', this)"
+                                >
+                                    <img
+                                        src="{{ image.image.url }}"
+                                        alt="{{ puller.puller_name }}"
+                                    >
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                <!-- INFORMATION -->
+                <div class="col-lg-7">
+                    <div class="section-title">
+                        <i class="bi bi-info-circle me-2"></i>
+                        PULLER SPECIFICATION
+                    </div>
+                    <div class="specification">
+
+                        <!-- SIZE -->
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                PULLER SIZE
+                            </span>
+
+                            <span class="spec-value">
+                                {{ puller.puller_size|default:"-" }}
+                            </span>
+                        </div>
+
+                        <!-- PULLER WEIGHT -->
+                        {% if puller.puller_weight %}
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                PULLER WEIGHT
+                            </span>
+                            <span class="spec-value">
+                                {{ puller.formatted_weight }} GRAM
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <!-- LENGTH -->
+                        {% if puller.puller_length %}
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                LENGTH
+                            </span>
+                            <span class="spec-value">
+                                {{ puller.puller_length }} MM
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <!-- WIDTH -->
+                        {% if puller.puller_width %}
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                WIDTH
+                            </span>
+                            <span class="spec-value">
+                                {{ puller.puller_width }} MM
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <!-- THICKNESS -->
+                        {% if puller.puller_thickness %}
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                THICKNESS
+                            </span>
+                            <span class="spec-value">
+                                {{ puller.puller_thickness }} MM
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <!-- INNER-DIA -->
+                        {% if puller.puller_inner_dia %}
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                INNER-DIA
+                            </span>
+                            <span class="spec-value">
+                                {{ puller.puller_innder_dia }} MM
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <!-- OUTER-DIA -->
+                        {% if puller.puller_inner_dia %}
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                INNER-DIA
+                            </span>
+                            <span class="spec-value">
+                                {{ puller.puller_inner_dia }} MM
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <!-- PRICE -->
+                        {% if request.user.profile.can_view_price %}
+                        <div class="spec-row">
+                            <span class="spec-label">PRICE</span>
+                            <span class="spec-value price">
+                                {% if puller.puller_price %}
+                                    $ {{ puller.puller_price }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <!-- CREATED -->
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                Created Date
+                            </span>
+                            <span class="spec-value">
+                                {% if puller.created_at %}
+                                    {{ puller.created_at|date:"d M Y, h:i A" }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BODY PARTS -->
+            {% if request.user.profile.can_view_body_parts %}
+            <div class="details-section">
+                <div class="details-title">
+                    <i class="bi bi-diagram-3 me-2"></i>
+                    Body Parts Used
+                </div>
+                {% if puller.body_parts.all %}
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th width="50">Select</th>
+                                    <th>Body Code</th>
+                                    <th>Body Parts Name</th>
+                                    <th>Size</th>
+                                    <th>Weight</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for body in puller.body_parts.all %}
+                                <tr>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            class="form-check-input body-checkbox"
+                                            data-price="{{ body.body_price|default:'0' }}"
+                                        >
+                                    </td>
+                                    <td>
+                                        <strong>
+                                            {{ body.body_code }}
+                                        </strong>
+                                    </td>
+
+                                    <td>
+                                        {{ body.body_name }}
+                                    </td>
+
+                                    <td>
+                                        {{ body.body_size|default:"-" }}
+                                    </td>
+
+                                    <td>
+                                        {% if body.formatted_weight %}
+                                            {{ body.formatted_weight }} GRAM
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if body.body_price %}
+                                            $ {{ body.body_price }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+
+                    <!-- PRICE CALCULATION -->
+                    <div class="price-calculation">
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                PULLER PRICE
+                            </span>
+                            <span class="spec-value">
+                                $ <span id="pullerPrice">
+                                    {{ puller.puller_price|default:"0" }}
+                                </span>
+                            </span>
+                        </div>
+
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                SELECTED BODY PARTS PRICE
+                            </span>
+                            <span class="spec-value">
+                                $ <span id="bodyPartsPrice">0.00</span>
+                            </span>
+                        </div>
+                        <div class="spec-row">
+                            <span class="spec-label">
+                                <strong>SLIDER PRICE</strong>
+                            </span>
+                            <span class="spec-value price">
+                                $ <span id="sliderPrice">
+                                    0.00
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="details-text">
+                        No body parts assigned to this puller.
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- ACTION -->
+             <br>
+
+            {% comment %} <div class="bottom-actions">
+                <a
+                    href="{% url 'puller_list' %}"
+                    class="btn btn-dark"
+                >
+                    <i class="bi bi-arrow-left me-1"></i>
+                    Back to Puller List
+                </a>
+            </div> {% endcomment %}
+
+            <div class="col-12 mt-4">
+                {% if category == 'special' %}
+                    {% url 'special_puller_page' as back_url %}
+                {% elif category == 'da' %}
+                    {% url 'da_puller_page' as back_url %}
+                {% elif category == 'dalh' %}
+                    {% url 'dalh_puller_page' as back_url %}
+                {% else %}
+                    {% url 'puller_list' as back_url %}
+                {% endif %}
+                <a href="{{ back_url }}" class="back-btn">
+                    <i class="bi bi-arrow-left"></i>
+                    <span>Back to Puller List</span>
+                </a>
+            <div>
+
+
+            {% comment %} <button type="button" class="back-btn" onclick="history.back()">
+                <i class="bi bi-arrow-left"></i>
+                <span>Back to Puller List</span>
+            </button> {% endcomment %}
+            <div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+function changeImage(imageUrl, thumbnail) {
+    // Change main image
+    document.getElementById('mainPullerImage').src = imageUrl;
+
+    // Remove active class from all thumbnails
+    document.querySelectorAll('.thumbnail').forEach(function(item) {
+        item.classList.remove('active');
+    });
+
+    // Add active class to clicked thumbnail
+    thumbnail.classList.add('active');
+}
+</script>
+
+
+{% endblock %}
+    

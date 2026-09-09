@@ -1,0 +1,54 @@
+{% extends 'pullers/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Puller and Button
+{% endblock %}
+
+
+{% block navbar_title %}
+    Puller and Button
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- START: Main Layout Grid (2 Columns: Dashboard + Performance Pane) -->
+    <div class="row g-4">
+
+      <!-- TOP AREA: Quick Info Stat Cards Row (Full Width) -->
+      <div class="col-12">
+        <div class="row g-4">
+          <!-- Stat Card 1: Green Alert Banner -->
+          <div class="col-md-6">
+            <div class="card alert-green-card" style="background-image: url('{% static 'pullers/assets/images/' %}');">
+              <a href="{% url 'puller_page_menu' %}" class="alert-green-link z-index-2" id="alert-link-statistics">
+                <span>Puller</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Stat Card 2: Net Income -->
+          <div class="col-md-6">
+            <div class="card alert-green-card" style="background-image: url('{% static 'pullers/assets/images/' %}');">
+              <a href="#" class="alert-green-link z-index-2" id="alert-link-statistics">
+                <span>Button</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END: TOP AREA -->
+
+    </div>
+    <!-- END: Main Layout Grid -->
+
+
+{% endblock %}
+
+
+
+
+    

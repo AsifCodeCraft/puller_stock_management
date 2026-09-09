@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+            Puller Management System
+        {% endblock %}
+    </title>
+
+    <meta name="description" content="Puller Management System">
+    <meta name="author" content="NEO Zipper">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{% static 'pullers/assets/images/favicon.ico' %}">
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'pullers/assets/libs/bootstrap/css/bootstrap.min.css' %}">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="{% static 'pullers/assets/libs/bootstrap-icons/bootstrap-icons.css' %}">
+
+    <!-- ApexCharts -->
+    <link rel="stylesheet" href="{% static 'pullers/assets/libs/apexcharts/apexcharts.css' %}">
+
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="{% static 'pullers/assets/libs/flatpickr/flatpickr.min.css' %}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'pullers/assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'pullers/css/style.css' %}">
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+
+<body>
+
+    <!-- ==============================
+         Sidebar
+    =============================== -->
+
+    {% include 'pullers/includes/sidebar.html' %}
+
+
+    <!-- ==============================
+         Main Wrapper
+    =============================== -->
+
+    <div class="main-wrapper">
+
+        <!-- Navbar -->
+        {% include 'pullers/includes/navbar.html' %}
+
+
+        <!-- ==============================
+             Page Content
+        =============================== -->
+
+        <main class="container-fluid">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+
+
+        <!-- Footer -->
+        {% include 'pullers/includes/footer.html' %}
+
+    </div>
+
+
+    <!-- ==============================
+         JavaScript
+    =============================== -->
+
+    <script src="{% static 'pullers/assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}">
+    </script>
+
+    <script src="{% static 'pullers/assets/libs/apexcharts/apexcharts.min.js' %}">
+    </script>
+
+    <script src="{% static 'pullers/assets/libs/flatpickr/flatpickr.min.js' %}">
+    </script>
+
+    <script src="{% static 'pullers/assets/js/dashboard.js' %}">
+    </script>
+
+    {% block extra_js %}
+    {% endblock %}
+
+</body>
+
+</html>

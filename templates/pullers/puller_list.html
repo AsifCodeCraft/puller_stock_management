@@ -1,0 +1,304 @@
+{% extends 'pullers/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Puller and Button
+{% endblock %}
+
+
+{% block navbar_title %}
+    Puller and Button
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- END: Top Navbar Component -->
+
+    <!-- START: Dashboard Header Banner -->
+
+    <!-- END: Dashboard Header Banner -->
+
+    <!-- START: Main Layout Grid (2 Columns: Dashboard + Performance Pane) -->
+    <div class="row g-4">
+
+      <!-- TOP AREA: Quick Info Stat Cards Row (Full Width) -->
+       <!-- END: TOP AREA -->
+      <!-- STATISTICS -->
+      <div class="row g-3">
+          <div class="col-md-4">
+              <div class="stat-card">
+                  <div class="d-flex align-items-center">
+                      <div class="stat-icon">
+                          <i class="bi bi-box-seam"></i>
+                      </div>
+                      <div class="ms-3">
+                          <div class="text-muted small">
+                              Total Pullers
+                          </div>
+                          <div class="stat-number">
+                              {{ total_pullers }}
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- SEARCH -->
+
+      <div class="filter-card">
+          <form method="GET">
+              <div class="row g-3 align-items-end">
+                  <div class="col-md-3">
+                      <label class="form-label">
+                          Puller Code
+                      </label>
+
+                      <input
+                          type="text"
+                          name="code"
+                          class="form-control"
+                          placeholder="Enter puller code"
+                          value="{{ code }}"
+                      >
+                  </div>
+
+                  <div class="col-md-3">
+                      <label class="form-label">
+                          Puller Name
+                      </label>
+
+                      <input
+                          type="text"
+                          name="name"
+                          class="form-control"
+                          placeholder="Enter puller name"
+                          value="{{ name }}"
+                      >
+                  </div>
+
+                  <div class="col-md-3">
+                      <label class="form-label">
+                          Puller Size
+                      </label>
+
+                      <input
+                          type="text"
+                          name="size"
+                          class="form-control"
+                          placeholder="Enter size"
+                          value="{{ size }}"
+                      >
+                  </div>
+
+
+                  <div class="col-md-3">
+                      <button type="submit" class="btn btn-search me-2">
+                          <i class="bi bi-search me-1"></i>
+                          Search
+                      </button>
+
+                      <a href="{% url "puller_list" %}" class="btn btn-reset">
+                          Reset
+                      </a>
+                  </div>
+              </div>
+          </form>
+      </div>
+
+      <!-- TABLE -->
+
+        <div class="table-card">
+
+          <div class="table-header">
+              <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                      <h5 class="table-title">
+                          Puller List
+                      </h5>
+                      <small class="text-muted">
+                          {{ total_pullers }} result(s) found
+                      </small>
+                  </div>
+              </div>
+          </div>
+
+
+          <div class="table-responsive custom-table">
+              <table class="table">
+                  <thead>
+                      <tr>
+                          <th>Picture</th>
+                          <th>Code</th>
+                          <th>Name</th>
+                          <th>Size</th>
+                          <th>Weight</th>
+                          {% comment %} <th>Price</th> {% endcomment %}
+                          <th>Action</th>
+                      </tr>
+
+                  </thead>
+
+                  <tbody>
+                  {% for puller in pullers %}
+                      <tr>
+                          <!-- IMAGE -->
+                          <td>
+                              {% with first_image=puller.images.all.0 %}
+
+                                  {% if first_image %}
+                                      <img
+                                          src="{{ first_image.image.url }}"
+                                          class="puller-image"
+                                          alt="{{ puller.puller_name }}"
+                                      >
+                                  {% else %}
+                                      <div class="no-image">
+                                          <i class="bi bi-image"></i>
+                                      </div>
+                                  {% endif %}
+
+                              {% endwith %}
+                          </td>
+
+                          <!-- CODE -->
+                          <td>
+                              <span class="code-badge">
+                                  {{ puller.puller_code }}
+                              </span>
+                          </td>
+
+
+                          <!-- NAME -->
+                          <td>
+                              <div class="puller-name">
+                                  {{ puller.puller_name }}
+                              </div>
+                          </td>
+
+
+                          <!-- SIZE -->
+                          <td>
+                              {{ puller.puller_size|default:"-" }}
+                          </td>
+
+
+                          <!-- WEIGHT -->
+
+                          <td>
+                              {% if puller.puller_weight %}
+                                  {{ puller.formatted_weight }} GRAM
+                              {% else %}
+
+                                  -
+
+                              {% endif %}
+
+                          </td>
+
+
+                          <!-- PRICE -->
+
+                          {% comment %} <td>
+
+                              {% if puller.puller_price %}
+
+                                  <span class="price">
+
+                                      $ {{ puller.puller_price }}
+
+                                  </span>
+
+                              {% else %}
+
+                                  -
+
+                              {% endif %}
+
+                          </td> {% endcomment %}
+
+
+                          <!-- ACTION -->
+
+                          <td>
+
+                              <a
+                                  href="{% url 'puller_detail' puller.pk %}?category={{ category }}"
+                                class="view-btn text-decoration-none"
+                              >
+
+                              <i class="bi bi-eye me-1"></i>
+
+                              View
+
+                          </a>
+
+                          </td>
+
+
+                      </tr>
+
+
+                  {% empty %}
+
+                      <tr>
+
+                          <td colspan="8">
+
+                              <div class="empty-state">
+
+                                  <i class="bi bi-inbox d-block"></i>
+
+                                  <div class="fw-semibold">
+
+                                      No Pullers Found
+
+                                  </div>
+
+                                  <div class="small">
+
+                                      Try changing your search criteria.
+
+                                  </div>
+
+                              </div>
+
+                          </td>
+
+                      </tr>
+
+                  {% endfor %}
+
+
+                  </tbody>
+
+              </table>
+
+          </div>
+
+    </div>
+
+    </div>
+    <!-- END: Main Layout Grid -->
+
+
+    <div class="col-12 mt-4">
+        {% if category == 'da' or category == 'dalh' %}
+        <a href="{% url 'regular_puller_page' %}" class="back-btn">
+        {% else %}
+        <a href="{% url 'puller_page_menu' %}" class="back-btn">
+        {% endif %}
+        <i class="bi bi-arrow-left"></i>
+        <span>Back</span>
+      </a>
+    <div>
+      <br>
+    </div>
+</div>
+
+{% endblock %}
+
+  

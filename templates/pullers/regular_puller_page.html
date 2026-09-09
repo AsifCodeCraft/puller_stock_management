@@ -1,0 +1,65 @@
+{% extends 'pullers/base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+    Puller and Button
+{% endblock %}
+
+
+{% block navbar_title %}
+    Puller and Button
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- START: Dashboard Header Banner -->
+    {% comment %} <div class="page-header">
+      <div>
+        <h1 class="page-title">Puller and Button</h1>
+        <p class="page-subtitle">Manage and search puller & Button specifications</p>
+      </div>
+    </div> {% endcomment %}
+    <!-- END: Dashboard Header Banner -->
+
+    <!-- START: Main Layout Grid (2 Columns: Dashboard + Performance Pane) -->
+    <div class="row g-4">
+
+      <!-- TOP AREA: Quick Info Stat Cards Row (Full Width) -->
+      <div class="col-12">
+        <div class="row g-4">
+          <!-- Stat Card 1: Green Alert Banner -->
+          <div class="col-md-6">
+            <div class="card alert-green-card" style="background-image: url('{% static 'pullers/assets/images/' %}');">
+              <a href="{% url 'da_puller_page' %}" class="alert-green-link z-index-2" id="alert-link-statistics">
+                <span>DA Puller</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Stat Card 2: Net Income -->
+          <div class="col-md-6">
+            <div class="card alert-green-card" style="background-image: url('{% static 'pullers/assets/images/' %}');">
+              <a href="{% url 'dalh_puller_page' %}" class="alert-green-link z-index-2" id="alert-link-statistics">
+                <span>DALH Puller</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END: TOP AREA -->
+
+    </div>
+    <!-- END: Main Layout Grid -->
+
+
+    <div class="col-12 mt-4">
+    <a href="{% url "home" %}" type="button" class="back-btn" onclick="history.back()">
+        <i class="bi bi-arrow-left"></i>
+        <span>Back</span>
+    </a>
+</div>
+
+    {% endblock %}

@@ -1,0 +1,112 @@
+{% load static %}
+
+<div class="sidebar-wrapper" id="sidebar">
+
+    <!-- Brand -->
+    <a href="{% url 'home' %}" class="sidebar-brand">
+        <span>NEO ZIPPER</span>
+    </a>
+
+
+    <!-- Navigation -->
+    <div class="flex-grow-1 overflow-y-auto">
+
+        <!-- Menu -->
+        <div class="sidebar-menu-section">
+
+            <div class="sidebar-menu-title">
+                Menu
+            </div>
+
+            <ul class="sidebar-menu-list">
+
+                <li class="sidebar-menu-item">
+
+                    <a href="{% url 'home' %}"
+                       class="sidebar-menu-link"
+                       title="Dashboard">
+
+                        <i class="bi bi-grid-fill"></i>
+
+                        <span>Dashboard</span>
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- Pages -->
+        <div class="sidebar-menu-section">
+
+            <div class="sidebar-menu-title">
+                Pages
+            </div>
+
+            <ul class="sidebar-menu-list">
+
+                <li class="sidebar-menu-item">
+
+                    <a href="{% url 'puller_page_menu' %}"
+                       class="sidebar-menu-link"
+                       title="Puller">
+
+                        <i class="bi bi-box-seam"></i>
+
+                        <span>Item</span>
+
+                    </a>
+
+                </li>
+                
+
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <!-- Profile -->
+    <div class="sidebar-profile">
+
+    {% if request.user.profile.profile_picture %}
+        <img
+            src="{{ request.user.profile.profile_picture.url }}"
+            alt="{{ request.user.username }}"
+            class="sidebar-profile-img"
+        >
+    {% else %}
+        <img
+            src="{% static 'pullers/assets/images/avatar.png' %}"
+            alt="{{ request.user.username }}"
+            class="sidebar-profile-img"
+        >
+    {% endif %}
+
+    <div class="sidebar-profile-info">
+
+        <div class="sidebar-profile-name">
+            {% if request.user.first_name %}
+                {{ request.user.first_name }} {{ request.user.last_name }}
+            {% else %}
+                {{ request.user.username }}
+            {% endif %}
+        </div>
+
+        <div class="sidebar-profile-email">
+            {% if request.user.email %}
+                {{ request.user.email }}
+            {% else %}
+                {{ request.user.username }}
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+</div>

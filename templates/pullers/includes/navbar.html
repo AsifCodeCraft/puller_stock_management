@@ -1,0 +1,113 @@
+{% load static %}
+<header class="navbar-custom">
+
+    <!-- Left -->
+    <div class="navbar-left">
+
+        <h1 class="page-title">
+            {% block navbar_title %}
+                Puller and Button
+            {% endblock %}
+        </h1>
+
+    </div>
+
+
+    <!-- Search -->
+    <div class="navbar-search-wrapper">
+
+        {% comment %}
+        Search box এখানে চাইলে পরে add করতে পারবেন।
+        {% endcomment %}
+
+    </div>
+
+
+    <!-- Right -->
+    <div class="navbar-actions">
+
+        <!-- Profile -->
+        <div class="dropdown ms-2">
+
+            <button
+                class="navbar-profile-btn dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                id="profile-dropdown"
+            >
+
+                {% if request.user.profile.profile_picture %}
+                <img
+                    src="{{ request.user.profile.profile_picture.url }}"
+                    alt="{{ request.user.username }}"
+                    class="navbar-profile-img"
+                >
+                {% else %}
+                    <img
+                        src="{% static 'pullers/assets/images/avatar.png' %}"
+                        alt="{{ request.user.username }}"
+                        class="navbar-profile-img"
+                    >
+                {% endif %}
+
+                <span class="navbar-profile-name d-none d-md-inline">
+                    {% if request.user.first_name %}
+                        {{ request.user.first_name }} {{ request.user.last_name }}
+                    {% else %}
+                        {{ request.user.username }}
+                    {% endif %}
+                </span>
+
+                <i class="bi bi-chevron-down navbar-profile-caret"></i>
+
+            </button>
+
+
+            <ul
+                class="dropdown-menu dropdown-menu-end dropdown-menu-profile"
+                aria-labelledby="profile-dropdown"
+            >
+
+                <li class="dropdown-header">
+                    Welcome!
+                </li>
+
+
+                <li>
+
+                    <a class="dropdown-item" href="#">
+
+                        <i class="bi bi-person"></i>
+
+                        My Account
+
+                    </a>
+
+                </li>
+
+
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+
+
+                <li>
+
+                    <a class="dropdown-item text-danger" href="{% url 'logout' %}">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        Logout
+
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</header>
