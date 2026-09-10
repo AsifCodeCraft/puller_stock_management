@@ -329,6 +329,7 @@
                                 $ <span id="bodyPartsPrice">0.00</span>
                             </span>
                         </div>
+
                         <div class="spec-row">
                             <span class="spec-label">
                                 <strong>SLIDER PRICE</strong>
@@ -410,38 +411,106 @@ function changeImage(imageUrl, thumbnail) {
 document.addEventListener('DOMContentLoaded', function () {
 
     const bodyCheckboxes = document.querySelectorAll('.body-checkbox');
-    const bodyPartsPriceElement = document.getElementById('bodyPartsPrice');
 
+    const pullerPriceElement = document.getElementById('pullerPrice');
+    const bodyPartsPriceElement = document.getElementById('bodyPartsPrice');
+    const sliderPriceElement = document.getElementById('sliderPrice');
+
+
+    function getPullerPrice() {
+        return parseFloat(
+            pullerPriceElement.textContent.trim()
+        ) || 0;
+    }
+
+
+    function calculatePrice() {
+
+        // -----------------------------
+        // PULLER PRICE
+        // -----------------------------
+        const pullerPrice = getPullerPrice();
+
+
+        // -----------------------------
+        // SELECTED BODY PRICE
+        // -----------------------------
+        let bodyPrice = 0;
+
+        bodyCheckboxes.forEach(function (checkbox) {
+
+            if (checkbox.checked) {
+
+                bodyPrice =
+                    parseFloat(checkbox.dataset.price) || 0;
+
+            }
+
+        });
+
+
+        // -----------------------------
+        // TOTAL PRICE
+        // PULLER + BODY
+        // -----------------------------
+        const totalPrice = pullerPrice + bodyPrice;
+
+
+        // -----------------------------
+        // SHOW BODY PRICE
+        // -----------------------------
+        bodyPartsPriceElement.textContent =
+            bodyPrice.toFixed(2);
+
+
+        // -----------------------------
+        // SHOW TOTAL IN SLIDER PRICE
+        // -----------------------------
+        sliderPriceElement.textContent =
+            totalPrice.toFixed(2);
+
+
+        console.log("Puller Price:", pullerPrice);
+        console.log("Body Price:", bodyPrice);
+        console.log("Total Price:", totalPrice);
+
+    }
+
+
+    // -----------------------------
+    // BODY CHECKBOX
+    // ONLY ONE SELECT AT A TIME
+    // -----------------------------
     bodyCheckboxes.forEach(function (checkbox) {
 
         checkbox.addEventListener('change', function () {
 
-            // যদি current checkbox select করা হয়
+            // যদি checkbox select করা হয়
             if (this.checked) {
 
-                // অন্য সব checkbox uncheck করে দিন
+                // অন্য সব checkbox uncheck
                 bodyCheckboxes.forEach(function (otherCheckbox) {
+
                     if (otherCheckbox !== checkbox) {
                         otherCheckbox.checked = false;
                     }
+
                 });
 
             }
 
-            // Selected body part-এর price বের করা
-            let total = 0;
+            // Price calculate
+            calculatePrice();
 
-            bodyCheckboxes.forEach(function (item) {
-                if (item.checked) {
-                    total += parseFloat(item.dataset.price) || 0;
-                }
-            });
-
-            // Price দেখানো
-            bodyPartsPriceElement.textContent = total.toFixed(2);
         });
 
     });
+
+
+    // -----------------------------
+    // INITIAL PRICE
+    // -----------------------------
+    calculatePrice();
 
 });
 </script>
