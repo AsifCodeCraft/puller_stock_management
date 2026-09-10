@@ -406,6 +406,46 @@ function changeImage(imageUrl, thumbnail) {
 }
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const bodyCheckboxes = document.querySelectorAll('.body-checkbox');
+    const bodyPartsPriceElement = document.getElementById('bodyPartsPrice');
+
+    bodyCheckboxes.forEach(function (checkbox) {
+
+        checkbox.addEventListener('change', function () {
+
+            // যদি current checkbox select করা হয়
+            if (this.checked) {
+
+                // অন্য সব checkbox uncheck করে দিন
+                bodyCheckboxes.forEach(function (otherCheckbox) {
+                    if (otherCheckbox !== checkbox) {
+                        otherCheckbox.checked = false;
+                    }
+                });
+
+            }
+
+            // Selected body part-এর price বের করা
+            let total = 0;
+
+            bodyCheckboxes.forEach(function (item) {
+                if (item.checked) {
+                    total += parseFloat(item.dataset.price) || 0;
+                }
+            });
+
+            // Price দেখানো
+            bodyPartsPriceElement.textContent = total.toFixed(2);
+        });
+
+    });
+
+});
+</script>
+
 
 {% endblock %}
     
